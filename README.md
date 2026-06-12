@@ -1,6 +1,12 @@
-# 💼 WealthPilot AI — Personal Financial Operating System
+# 💼 WealthPilot AI — Personal Finance Manager
 
-An AI-powered financial management platform built with React, Spring Boot, FastAPI, and MySQL.
+An AI-powered personal finance management application built with React, Spring Boot, FastAPI, and MySQL.
+
+---
+
+## What It Does
+
+WealthPilot AI helps you track income and expenses, set budgets, plan financial goals, manage debts, monitor investments and insurance policies, and get AI-driven insights and spending forecasts — all from a single clean dashboard.
 
 ---
 
@@ -45,10 +51,9 @@ FastAPI AI Service (port 8000)
 docker-compose up --build
 ```
 
-- Frontend → http://localhost:3000
+- App → http://localhost:3000
 - Backend API → http://localhost:8080
 - AI Service → http://localhost:8000
-- MySQL → localhost:3306
 
 ### Stop
 
@@ -56,7 +61,7 @@ docker-compose up --build
 docker-compose down
 ```
 
-### Stop and remove volumes (reset DB)
+### Stop and reset database
 
 ```bash
 docker-compose down -v
@@ -68,8 +73,6 @@ docker-compose down -v
 
 ### 1. MySQL
 
-Create the database and run the schema:
-
 ```bash
 mysql -u root -p < database/schema.sql
 ```
@@ -78,7 +81,6 @@ mysql -u root -p < database/schema.sql
 
 ```bash
 cd backend
-# Set environment variables or edit application.yml
 mvn spring-boot:run
 ```
 
@@ -87,7 +89,7 @@ mvn spring-boot:run
 ```bash
 cd ai-service
 python -m venv venv
-venv\Scripts\activate        # Windows
+venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
@@ -102,138 +104,75 @@ npm start
 
 ---
 
-## API Endpoints
+## Features
 
-### Auth
-| Method | Endpoint              | Description       |
-|--------|-----------------------|-------------------|
-| POST   | /api/auth/register    | Register user     |
-| POST   | /api/auth/login       | Login, get JWT    |
-
-### Dashboard
-| Method | Endpoint              | Description              |
-|--------|-----------------------|--------------------------|
-| GET    | /api/dashboard        | Full financial overview  |
-
-### Transactions
-| Method | Endpoint                  | Description          |
-|--------|---------------------------|----------------------|
-| GET    | /api/transactions         | List all             |
-| POST   | /api/transactions         | Create               |
-| PUT    | /api/transactions/{id}    | Update               |
-| DELETE | /api/transactions/{id}    | Delete               |
-
-### Budgets
-| Method | Endpoint            | Description         |
-|--------|---------------------|---------------------|
-| GET    | /api/budgets        | Current month       |
-| POST   | /api/budgets        | Set budget          |
-| PUT    | /api/budgets/{id}   | Update limit        |
-| DELETE | /api/budgets/{id}   | Remove              |
-
-### Goals
-| Method | Endpoint          | Description  |
-|--------|-------------------|--------------|
-| GET    | /api/goals        | List all     |
-| POST   | /api/goals        | Create       |
-| PUT    | /api/goals/{id}   | Update       |
-| DELETE | /api/goals/{id}   | Delete       |
-
-### Debts
-| Method | Endpoint          | Description  |
-|--------|-------------------|--------------|
-| GET    | /api/debts        | List all     |
-| POST   | /api/debts        | Add debt     |
-| PUT    | /api/debts/{id}   | Update       |
-| DELETE | /api/debts/{id}   | Delete       |
-
-### Investments
-| Method | Endpoint               | Description  |
-|--------|------------------------|--------------|
-| GET    | /api/investments       | Portfolio    |
-| POST   | /api/investments       | Add          |
-| PUT    | /api/investments/{id}  | Update       |
-| DELETE | /api/investments/{id}  | Delete       |
-
-### Insurance
-| Method | Endpoint              | Description  |
-|--------|-----------------------|--------------|
-| GET    | /api/insurance        | All policies |
-| POST   | /api/insurance        | Add policy   |
-| PUT    | /api/insurance/{id}   | Update       |
-| DELETE | /api/insurance/{id}   | Delete       |
-
-### AI
-| Method | Endpoint            | Description              |
-|--------|---------------------|--------------------------|
-| POST   | /api/ai/chat        | Ask AI assistant         |
-| GET    | /api/ai/forecast    | Expense forecast         |
-| GET    | /api/ai/analyze     | Spending behavior        |
-
-### Notifications
-| Method | Endpoint                       | Description     |
-|--------|--------------------------------|-----------------|
-| GET    | /api/notifications             | List all        |
-| PUT    | /api/notifications/{id}/read   | Mark as read    |
+| Module          | Description                                      |
+|-----------------|--------------------------------------------------|
+| Dashboard       | Net worth, income, expenses, cash flow, charts   |
+| Transactions    | Add, edit, delete income and expense records     |
+| Budget          | Set monthly spending limits per category         |
+| Goals           | Track savings goals with monthly targets         |
+| Debts           | Monitor loans, EMIs, repayment progress          |
+| Investments     | Portfolio tracking with gain/loss analysis       |
+| Insurance       | Policy tracking with renewal alerts              |
+| AI Assistant    | Chat, expense forecasting, spending analysis     |
+| Health Score    | 0–100 financial health score with breakdown      |
 
 ---
 
-## User Roles
+## API Endpoints
 
-| Role      | Description                    |
-|-----------|--------------------------------|
-| USER      | Individual user (default)      |
-| FAMILY    | Family account                 |
-| FREELANCER| Freelancer / self-employed     |
-| BUSINESS  | Business owner                 |
-| ADMIN     | Administrator                  |
+### Auth
+| Method | Endpoint              | Description    |
+|--------|-----------------------|----------------|
+| POST   | /api/auth/register    | Register user  |
+| POST   | /api/auth/login       | Login, get JWT |
+
+### Dashboard
+| Method | Endpoint       | Description             |
+|--------|----------------|-------------------------|
+| GET    | /api/dashboard | Full financial summary  |
+
+### Transactions
+| Method | Endpoint               | Description |
+|--------|------------------------|-------------|
+| GET    | /api/transactions      | List all    |
+| POST   | /api/transactions      | Create      |
+| PUT    | /api/transactions/{id} | Update      |
+| DELETE | /api/transactions/{id} | Delete      |
+
+### Budgets / Goals / Debts / Investments / Insurance
+All follow the same pattern:
+`GET /api/{resource}` · `POST /api/{resource}` · `PUT /api/{resource}/{id}` · `DELETE /api/{resource}/{id}`
+
+### AI
+| Method | Endpoint         | Description           |
+|--------|------------------|-----------------------|
+| POST   | /api/ai/chat     | Ask the AI assistant  |
+| GET    | /api/ai/forecast | Expense forecast      |
+| GET    | /api/ai/analyze  | Spending analysis     |
 
 ---
 
 ## Financial Health Score
 
-Calculated from 5 weighted components:
+| Component           | Max Points |
+|---------------------|------------|
+| Savings Rate (>20%) | 25         |
+| Debt Ratio (<36%)   | 25         |
+| Emergency Fund      | 25         |
+| Budget Discipline   | 15         |
+| Goal Progress       | 10         |
 
-| Component             | Weight |
-|-----------------------|--------|
-| Savings Rate (>20%)   | 25 pts |
-| Debt Ratio (<36%)     | 25 pts |
-| Emergency Fund        | 25 pts |
-| Budget Discipline     | 15 pts |
-| Goal Progress         | 10 pts |
-
-Score Range: 0–100 · Excellent: 70+ · Fair: 40–69 · Needs Work: <40
+Score: 0–100 · Excellent: 70+ · Fair: 40–69 · Needs Work: <40
 
 ---
 
 ## Security
 
-- Passwords hashed with BCrypt
-- JWT tokens (24h expiry) on all protected routes
+- BCrypt password hashing
+- JWT authentication (24h expiry)
 - CORS restricted to frontend origin
-- `@JsonIgnore` on all User relationships to prevent data leakage
-- Input validation on all DTOs via Jakarta Bean Validation
-- SQL Injection prevented via JPA parameterized queries
-
----
-
-## Development Phases
-
-| Phase | Features                                              | Status |
-|-------|-------------------------------------------------------|--------|
-| 1     | Auth, Transactions, Dashboard, Budget                 | ✅ Done |
-| 2     | Goals, Debts, Investments, Insurance, Health Score    | ✅ Done |
-| 3     | AI Chat, Spending Analysis, Forecasting               | ✅ Done |
-| 4     | Notifications, Audit Logging, Enterprise features     | 🔜 Next |
-
----
-
-## Future Scalability
-
-- Add Redis caching for dashboard queries
-- Switch to OAuth2 / SSO for enterprise users
-- Add WebSocket for real-time notifications
-- Migrate AI service to dedicated ML models (LLM integration)
-- Multi-currency support via exchange rate API
-- Mobile app via React Native
-- Deploy on AWS ECS + RDS + ElastiCache
+- `@JsonIgnore` on all user relationships
+- Input validation via Jakarta Bean Validation
+- SQL Injection prevention via JPA parameterized queries

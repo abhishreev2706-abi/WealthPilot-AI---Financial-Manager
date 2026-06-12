@@ -63,7 +63,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">Dashboard</h2>
-        <p className="text-slate-400 text-sm">Your complete financial overview</p>
+        <p className="text-slate-400 text-sm">Your financial summary at a glance</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

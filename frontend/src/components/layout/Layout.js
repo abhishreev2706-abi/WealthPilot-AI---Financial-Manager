@@ -21,7 +21,7 @@ export default function Layout() {
       <aside className="w-64 bg-slate-800 flex flex-col border-r border-slate-700">
         <div className="p-6 border-b border-slate-700">
           <h1 className="text-xl font-bold text-blue-400">💼 WealthPilot AI</h1>
-          <p className="text-xs text-slate-400 mt-1">Personal Financial OS</p>
+          <p className="text-xs text-slate-400 mt-1">Smart Finance Manager</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-1">

@@ -44,7 +44,7 @@ export default function RegisterPage() {
       <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 w-full max-w-sm">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-blue-400">💼 WealthPilot AI</h1>
-          <p className="text-slate-400 text-sm mt-1">Create your account</p>
+          <p className="text-slate-400 text-sm mt-1">Create your free account</p>
         </div>
 
         {error && (
