@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: wealthpilot-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wealthpilot
+      MYSQL_USER: wealthuser
+      MYSQL_PASSWORD: wealthpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - wealthpilot-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: wealthpilot-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/wealthpilot?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: wealthuser
+      SPRING_DATASOURCE_PASSWORD: wealthpass
+      JWT_SECRET: wealthpilot-super-secret-jwt-key-2024-production
+      AI_SERVICE_URL: http://ai-service:8000
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - wealthpilot-net
+
+  ai-service:
+    build: ./ai-service
+    container_name: wealthpilot-ai
+    ports:
+      - "8000:8000"
+    networks:
+      - wealthpilot-net
+
+  frontend:
+    build: ./frontend
+    container_name: wealthpilot-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - wealthpilot-net
+
+volumes:
+  mysql_data:
+
+networks:
+  wealthpilot-net:
+    driver: bridge
